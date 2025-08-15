@@ -10,4 +10,4 @@ Create a ```.env``` file in the root folder with the below field:
 ```TARGET_URL="vulnerableserver.com"```
 
 Run the application
-```# python main.py```
+```# python app.py```
