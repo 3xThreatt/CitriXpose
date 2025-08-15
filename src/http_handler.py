@@ -5,18 +5,20 @@ from src.request_configuration import *
 class CitrixConnection:
     def __init__(self, domain:str, session: aiohttp.ClientSession):
         self.session = session
-
-    async def target(self, proxy:str = None):
+        self.domain = domain
+        
+    async def target(self):
         self.proto = "https://"
-        self.domain = self.domain
         self.endpoint = "/p/u/doAuthentication.do"
-
         url = self.proto + self.domain + self.endpoint
-        post_body = {"login"}
+        headers = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:141.0) Gecko/20100101 Firefox/141.0"
+}
 
-        async with self.session.post(url, data=post_body, proxy=proxy) as resp:
+
+        async with self.session.post(url, data="login", headers=headers) as resp:
             text = await resp.text()
-            return resp.status, text
+            return text
 
 
 

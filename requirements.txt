@@ -1,0 +1,4 @@
+aiohttp==3.10.5
+aiohttp-socks==0.8.4
+beautifulsoup4==4.12.3
+python-dotenv==1.0.1
