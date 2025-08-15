@@ -6,7 +6,7 @@ A python web client made to dynamically dump internal memory, exploiting the Cit
 Install necessary dependancies
 ```# pip install -r requirements.txt```
 
-Create a .env file in the root folder with the below field:
+Create a ```.env``` file in the root folder with the below field:
 ```TARGET_URL="vulnerableserver.com"```
 
 Run the application
